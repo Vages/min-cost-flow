@@ -12,11 +12,13 @@ const SOURCE_NODE = 0;
 
 /**
  * An implementation of the Successive shortest path algorithm for solving a minimum cost flow problem
- *
- * Assumes that the nodes are sequentially numbered integers from 0 to (but not including) n.
- * node 0 is the source, node n-1 is the sink.
- *
  * The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.html
+ *
+ * Assumptions:
+ * - The nodes are sequentially numbered integers from 0 to (but not including) n.
+ * - Node 0 is the source, node n-1 is the sink.
+ * - Only one edge goes between any two nodes – in either direction. In other words: no double edges in the same direction, and no back edges.
+ *
  * @param {Edge[]} graph The graph represented as an edge list
  * @param {number | undefined} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
  */
