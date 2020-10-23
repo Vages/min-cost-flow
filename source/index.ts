@@ -17,17 +17,17 @@ const SOURCE_NODE = 0;
  * node 0 is the source, node n-1 is the sink.
  *
  * The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.html
- * @param {Edge[]} edges The graph represented as an edge list
+ * @param {Edge[]} graph The graph represented as an edge list
  * @param {number | undefined} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
  */
-export function minCostFlow(edges: Edge[], desiredFlow = Infinity): Array<Required<Edge>> {
-  const sink = Math.max(...edges.map(({to}) => to));
+export function minCostFlow(graph: Edge[], desiredFlow = Infinity): Array<Required<Edge>> {
+  const sink = Math.max(...graph.map(({to}) => to));
   const numberOfNodes = sink + 1;
 
   const adjacency: number[][] = [...new Array(numberOfNodes)].map(() => []);
   const costMatrix: number[][] = [...new Array(numberOfNodes)].map(() => new Array(numberOfNodes).fill(0));
   const capacityMatrix: number[][] = [...new Array(numberOfNodes)].map(() => new Array(numberOfNodes).fill(0));
-  edges.forEach(({capacity, cost, flow = 0, from, to}) => {
+  graph.forEach(({capacity, cost, flow = 0, from, to}) => {
     adjacency[from].push(to);
     adjacency[to].push(from);
     costMatrix[from][to] = cost;
@@ -60,7 +60,7 @@ export function minCostFlow(edges: Edge[], desiredFlow = Infinity): Array<Requir
     }
   }
 
-  return edges.map((edge) => ({...edge, flow: capacityMatrix[edge.to][edge.from]}));
+  return graph.map((edge) => ({...edge, flow: capacityMatrix[edge.to][edge.from]}));
 }
 
 /**
@@ -101,10 +101,10 @@ function shortestPaths(
 /**
  * Calculates the current flow in the network as the sum of the flow on all edges going from the source node
  *
- * @param {Edge[]} edges The graph represented as an edge list
+ * @param {Edge[]} graph The graph represented as an edge list
  */
-export function currentFlow(edges: Edge[]): number {
-  return edges
+export function currentFlow(graph: Edge[]): number {
+  return graph
     .filter((edge) => edge.from === SOURCE_NODE)
     .reduce((accumulator, edge) => accumulator + (edge.flow ?? 0), 0);
 }
@@ -112,8 +112,8 @@ export function currentFlow(edges: Edge[]): number {
 /**
  * Calculates the current cost of the network as the sum of each edge's cost times its flow
  *
- * @param {Edge[]} edges The graph represented as an edge list
+ * @param {Edge[]} graph The graph represented as an edge list
  */
-export function currentCost(edges: Edge[]): number {
-  return edges.reduce((accumulator, edge) => accumulator + edge.cost * (edge.flow ?? 0), 0);
+export function currentCost(graph: Edge[]): number {
+  return graph.reduce((accumulator, edge) => accumulator + edge.cost * (edge.flow ?? 0), 0);
 }
