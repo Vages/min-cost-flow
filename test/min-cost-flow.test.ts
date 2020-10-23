@@ -134,9 +134,9 @@ const bestFlow = {
   ]
 };
 
-describe('maxFlowMinCost', () => {
-  test('maxFlowMinCost', () => {
-    const minCostFlow1 = minCostFlow(bipartiteNetwork, Infinity);
+describe('minCostMaxFlow', () => {
+  test('minCostMaxFlow', () => {
+    const minCostFlow1 = minCostFlow(bipartiteNetwork);
     const compareEdges = (a: Edge, b: Edge) => a.from - b.from || a.to - b.to;
     expect([...minCostFlow1.edges].sort(compareEdges)).toEqual([...bestFlow.edges].sort(compareEdges));
   });

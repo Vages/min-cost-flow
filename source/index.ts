@@ -18,11 +18,11 @@ const SOURCE_NODE = 0;
  *
  * The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.html
  * @param {Edge[]} edges
- * @param {number} desiredFlow
+ * @param {number | undefined} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
  */
 export function minCostFlow(
   edges: Edge[],
-  desiredFlow: number
+  desiredFlow = Infinity
 ): {flow: number; cost: number; edges: Array<Required<Edge>>} {
   const sink = Math.max(...edges.map(({to}) => to));
   const numberOfNodes = sink + 1;
