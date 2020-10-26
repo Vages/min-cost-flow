@@ -9,7 +9,7 @@ A package that solves minimum cost flow problems using the Successive Shortest P
 <dl>
 <dt><a href="#minCostFlow">minCostFlow(graph, desiredFlow)</a> ⇒ <code>Array.&lt;Required.&lt;Edge&gt;&gt;</code></dt>
 <dd><p>An implementation of the Successive shortest path algorithm for solving a minimum cost flow problem
-The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.html</p>
+The implementation is nabbed from <a href="https:%5C/%5C/cp-algorithms.com/graph/min_cost_flow.html">https://cp-algorithms.com/graph/min_cost_flow.html</a></p>
 <p>Assumptions:</p>
 <ul>
 <li>The nodes are sequentially numbered integers from 0 to (but not including) n.</li>
@@ -17,7 +17,7 @@ The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.
 <li>Only one edge goes between any two nodes – in either direction. In other words: no double edges in the same direction, and no back edges.</li>
 </ul></dd>
 <dt><a href="#cheapestPaths">cheapestPaths(adjacency, capacity, cost)</a> ⇒ <code>Object</code></dt>
-<dd><p>The Bellman-Ford shortest path algorithm as shown in [https://cp-algorithms.com/graph/min_cost_flow.html].
+<dd><p>The Bellman-Ford shortest path algorithm as shown in <a href="https:%5C/%5C/cp-algorithms.com/graph/min_cost_flow.html">https://cp-algorithms.com/graph/min_cost_flow.html</a>.
 Calculates the chepaest path from the source to every other node in the network as well as which node is the best predecessor of every node.</p></dd>
 <dt><a href="#currentFlow">currentFlow(graph)</a> ⇒ <code>number</code></dt>
 <dd><p>Calculates the current flow in a network, which is the sum of the flow on all edges going from the source node</p></dd>
@@ -29,7 +29,7 @@ Calculates the chepaest path from the source to every other node in the network 
 
 ## minCostFlow(graph, desiredFlow) ⇒ <code>Array.&lt;Required.&lt;Edge&gt;&gt;</code>
 <p>An implementation of the Successive shortest path algorithm for solving a minimum cost flow problem
-The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.html</p>
+The implementation is nabbed from <a href="https:%5C/%5C/cp-algorithms.com/graph/min_cost_flow.html">https://cp-algorithms.com/graph/min_cost_flow.html</a></p>
 <p>Assumptions:</p>
 <ul>
 <li>The nodes are sequentially numbered integers from 0 to (but not including) n.</li>
@@ -48,7 +48,7 @@ The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.
 <a name="cheapestPaths"></a>
 
 ## cheapestPaths(adjacency, capacity, cost) ⇒ <code>Object</code>
-<p>The Bellman-Ford shortest path algorithm as shown in [https://cp-algorithms.com/graph/min_cost_flow.html].
+<p>The Bellman-Ford shortest path algorithm as shown in <a href="https:%5C/%5C/cp-algorithms.com/graph/min_cost_flow.html">https://cp-algorithms.com/graph/min_cost_flow.html</a>.
 Calculates the chepaest path from the source to every other node in the network as well as which node is the best predecessor of every node.</p>
 
 **Kind**: global function  

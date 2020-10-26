@@ -12,7 +12,7 @@ const SOURCE_NODE = 0;
 
 /**
  * An implementation of the Successive shortest path algorithm for solving a minimum cost flow problem
- * The implementation is nabbed from https://cp-algorithms.com/graph/min_cost_flow.html
+ * The implementation is nabbed from <https://cp-algorithms.com/graph/min_cost_flow.html>
  *
  * Assumptions:
  * - The nodes are sequentially numbered integers from 0 to (but not including) n.
@@ -67,7 +67,7 @@ export function minCostFlow(graph: Edge[], desiredFlow = Infinity): Array<Requir
 }
 
 /**
- * The Bellman-Ford shortest path algorithm as shown in [https://cp-algorithms.com/graph/min_cost_flow.html].
+ * The Bellman-Ford shortest path algorithm as shown in <https://cp-algorithms.com/graph/min_cost_flow.html>.
  * Calculates the chepaest path from the source to every other node in the network as well as which node is the best predecessor of every node.
  *
  * @param {number[][]} adjacency . I.e., if adjacency[0] === [1, 4, 6], nodes 1, 4 and 6 are adjacent to 0.
