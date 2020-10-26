@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import {minCostFlow, currentCost, currentFlow} from '../source';
+import {minCostFlow, currentCost, currentFlow, destringifyGraph, restringifyGraph} from '../source';
 import type {Edge} from '../source';
 
 const bipartiteNetwork: Edge[] = [
@@ -141,5 +141,127 @@ describe('minCostMaxFlow', () => {
     expect([...minCostFlow1].sort(compareEdges)).toEqual([...bestFlow].sort(compareEdges));
     expect(currentFlow(minCostFlow1)).toEqual(3);
     expect(currentCost(minCostFlow1)).toEqual(6);
+  });
+});
+
+const namedBestFlow = [
+  {
+    from: 'SOURCE',
+    to: 'alice',
+    cost: 0,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'SOURCE',
+    to: 'bob',
+    cost: 0,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'SOURCE',
+    to: 'christine',
+    cost: 0,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'alice',
+    to: 'daniel',
+    cost: 2,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'alice',
+    to: 'erica',
+    cost: 4,
+    capacity: 1,
+    flow: 0
+  },
+  {
+    from: 'alice',
+    to: 'frank',
+    cost: 6,
+    capacity: 1,
+    flow: 0
+  },
+  {
+    from: 'bob',
+    to: 'daniel',
+    cost: 6,
+    capacity: 1,
+    flow: 0
+  },
+  {
+    from: 'bob',
+    to: 'erica',
+    cost: 2,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'bob',
+    to: 'frank',
+    cost: 4,
+    capacity: 1,
+    flow: 0
+  },
+  {
+    from: 'christine',
+    to: 'daniel',
+    cost: 4,
+    capacity: 1,
+    flow: 0
+  },
+  {
+    from: 'christine',
+    to: 'erica',
+    cost: 6,
+    capacity: 1,
+    flow: 0
+  },
+  {
+    from: 'christine',
+    to: 'frank',
+    cost: 2,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'daniel',
+    to: 'SINK',
+    cost: 0,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'erica',
+    to: 'SINK',
+    cost: 0,
+    capacity: 1,
+    flow: 1
+  },
+  {
+    from: 'frank',
+    to: 'SINK',
+    cost: 0,
+    capacity: 1,
+    flow: 1
+  }
+];
+
+describe('destringifyGraph', () => {
+  test('destringifyGraph and restringifyGraph work', () => {
+    const [destringifiedGraph, nodeNames] = destringifyGraph(namedBestFlow);
+    expect(destringifiedGraph).toEqual(bestFlow);
+    expect(nodeNames).toEqual(['SOURCE', 'alice', 'bob', 'christine', 'daniel', 'erica', 'frank', 'SINK']);
+    expect(restringifyGraph(destringifiedGraph, nodeNames)).toEqual(namedBestFlow);
+  });
+
+  test('destringifyGraph and restringifyGraph work', () => {
+    const [, nodeNames] = destringifyGraph(namedBestFlow, {source: 'daniel', sink: 'bob'});
+    expect(nodeNames).toEqual(['daniel', 'SINK', 'SOURCE', 'alice', 'christine', 'erica', 'frank', 'bob']);
   });
 });

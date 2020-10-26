@@ -1,8 +1,8 @@
 import Heap from 'heap';
 
-export type Edge = {
-  from: number;
-  to: number;
+export type Edge<T = number | string> = {
+  from: T;
+  to: T;
   capacity: number;
   cost: number;
   flow?: number;
@@ -19,11 +19,11 @@ const SOURCE_NODE = 0;
  * - Node 0 is the source, node n-1 is the sink.
  * - Only one edge goes between any two nodes – in either direction. In other words: no double edges in the same direction, and no back edges.
  *
- * @param {Edge[]} graph The graph represented as an edge list
+ * @param {Array<Edge<number>>} graph The graph represented as an edge list
  * @param {number} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
  * @returns {Array<Required<Edge>>} The network updated to provide as much flow up to the limit specified by desiredFlow
  */
-export function minCostFlow(graph: Edge[], desiredFlow = Infinity): Array<Required<Edge>> {
+export function minCostFlow(graph: Array<Edge<number>>, desiredFlow = Infinity): Array<Required<Edge>> {
   const sink = Math.max(...graph.map(({to}) => to));
   const numberOfNodes = sink + 1;
 
@@ -109,10 +109,10 @@ function cheapestPaths(
 /**
  * Calculates the current flow in a network, which is the sum of the flow on all edges going from the source node
  *
- * @param {Edge[]} graph A graph in the form of an edge list
+ * @param {Array<Edge<number>>} graph A graph in the form of an edge list
  * @returns {number} The current flow
  */
-export function currentFlow(graph: Edge[]): number {
+export function currentFlow(graph: Array<Edge<number>>): number {
   return graph
     .filter((edge) => edge.from === SOURCE_NODE)
     .reduce((accumulator, edge) => accumulator + (edge.flow ?? 0), 0);
@@ -121,9 +121,69 @@ export function currentFlow(graph: Edge[]): number {
 /**
  * Calculates the current cost of a network, which is the sum of each edge's cost per unit of flow times the flow passing through it
  *
- * @param {Edge[]} graph A graph in the form of an edge list
+ * @param {Array<Edge<number>>} graph A graph in the form of an edge list
  * @returns {number} The current cost of the network
  */
-export function currentCost(graph: Edge[]): number {
+export function currentCost(graph: Array<Edge<number>>): number {
   return graph.reduce((accumulator, edge) => accumulator + edge.cost * (edge.flow ?? 0), 0);
+}
+
+/**
+ * Takes a graph with edges edges going to and from nodes with string names and transforms it into a graph with numbered edges,
+ * following the convention that the source node is the first node and the sink node the last.
+ * It assumes that the source node's name is SOURCE and the sink node's name is SINK.
+ *
+ * @param {Array<Edge<string>>} graph A graph in the form of an edge list
+ * @param {{source: (string|undefined), sink: (string|undefined)}} options An object with two (optional) keys: source and sink.
+ * If a value is supplied at this key, the function will assume that the source/sink node's name is equal to the supplied value.
+ * @returns {Array} A two element tuple whose first element is the destringified graph and whose second element is the node names listed in the order in which they were named, so that the graph can be restringified by getting nodeNames[n] for any node in the destringified graph.
+ */
+export function destringifyGraph(
+  graph: Array<Edge<string>>,
+  options: {source?: string; sink?: string} = {}
+): [Array<Edge<number>>, string[]] {
+  const {source = 'SOURCE', sink = 'SINK'} = options;
+  const ordinaryNodes = [
+    ...new Set(graph.flatMap(({from, to}) => [from, to]).filter((name) => name !== source && name !== sink))
+  ].sort();
+  const allNodeNames = [source, ...ordinaryNodes, sink];
+  const stringToIndex = new Map(allNodeNames.map((name, index): [string, number] => [name, index]));
+  return [
+    graph.map((edge) => {
+      const from = stringToIndex.get(edge.from);
+      const to = stringToIndex.get(edge.to);
+      if (from == null) {
+        throw new Error(`The node ${edge.from} does not seem to be included in this network's nodes.`);
+      }
+
+      if (to == null) {
+        throw new Error(`The node ${edge.to} does not seem to be included in this network's nodes.`);
+      }
+
+      return {...edge, from, to};
+    }),
+    allNodeNames
+  ];
+}
+
+/**
+ * Restringifies a graph that has been destringified by destringifyGraph
+ *
+ * @param {Array<Edge<number>>} graph The graph as an edge list
+ * @param {string[]} nodeNames The names of each node, so that the name of the node numbered `x` can be found at `nodeNames[x]`
+ * @returns {Array<Edge<string>>} The restringified graph
+ */
+export function restringifyGraph(graph: Array<Edge<number>>, nodeNames: string[]): Array<Edge<string>> {
+  const highestAllowedIndex = nodeNames.length - 1;
+  return graph.map(({from, to, ...edge}) => {
+    if (from > highestAllowedIndex) {
+      throw new Error(`Index ${from} is outside of the list of node names`);
+    }
+
+    if (to > highestAllowedIndex) {
+      throw new Error(`Index ${to} is outside of the list of node names`);
+    }
+
+    return {...edge, from: nodeNames[from], to: nodeNames[to]};
+  });
 }

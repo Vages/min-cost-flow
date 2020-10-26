@@ -20,6 +20,8 @@
   "xo": {
     "prettier": true,
     "rules": {
+      "eqeqeq": ["error", "always", {"null": "never"}],
+      "no-eq-null": "off",
       "unicorn/no-reduce": "off"
     }
   },

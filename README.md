@@ -23,6 +23,12 @@ Calculates the chepaest path from the source to every other node in the network 
 <dd><p>Calculates the current flow in a network, which is the sum of the flow on all edges going from the source node</p></dd>
 <dt><a href="#currentCost">currentCost(graph)</a> ⇒ <code>number</code></dt>
 <dd><p>Calculates the current cost of a network, which is the sum of each edge's cost per unit of flow times the flow passing through it</p></dd>
+<dt><a href="#destringifyGraph">destringifyGraph(graph, options)</a> ⇒ <code>Array</code></dt>
+<dd><p>Takes a graph with edges edges going to and from nodes with string names and transforms it into a graph with numbered edges,
+following the convention that the source node is the first node and the sink node the last.
+It assumes that the source node's name is SOURCE and the sink node's name is SINK.</p></dd>
+<dt><a href="#restringifyGraph">restringifyGraph(graph, nodeNames)</a> ⇒ <code>Array.&lt;Edge.&lt;string&gt;&gt;</code></dt>
+<dd><p>Restringifies a graph that has been destringified by destringifyGraph</p></dd>
 </dl>
 
 <a name="minCostFlow"></a>
@@ -42,7 +48,7 @@ The implementation is nabbed from <a href="https:%5C/%5C/cp-algorithms.com/graph
 
 | Param | Type | Description |
 | --- | --- | --- |
-| graph | <code>Array.&lt;Edge&gt;</code> | <p>The graph represented as an edge list</p> |
+| graph | <code>Array.&lt;Edge.&lt;number&gt;&gt;</code> | <p>The graph represented as an edge list</p> |
 | desiredFlow | <code>number</code> | <p>The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.</p> |
 
 <a name="cheapestPaths"></a>
@@ -70,7 +76,7 @@ Calculates the chepaest path from the source to every other node in the network 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| graph | <code>Array.&lt;Edge&gt;</code> | <p>A graph in the form of an edge list</p> |
+| graph | <code>Array.&lt;Edge.&lt;number&gt;&gt;</code> | <p>A graph in the form of an edge list</p> |
 
 <a name="currentCost"></a>
 
@@ -82,5 +88,33 @@ Calculates the chepaest path from the source to every other node in the network 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| graph | <code>Array.&lt;Edge&gt;</code> | <p>A graph in the form of an edge list</p> |
+| graph | <code>Array.&lt;Edge.&lt;number&gt;&gt;</code> | <p>A graph in the form of an edge list</p> |
+
+<a name="destringifyGraph"></a>
+
+## destringifyGraph(graph, options) ⇒ <code>Array</code>
+<p>Takes a graph with edges edges going to and from nodes with string names and transforms it into a graph with numbered edges,
+following the convention that the source node is the first node and the sink node the last.
+It assumes that the source node's name is SOURCE and the sink node's name is SINK.</p>
+
+**Kind**: global function  
+**Returns**: <code>Array</code> - <p>A two element tuple whose first element is the destringified graph and whose second element is the node names listed in the order in which they were named, so that the graph can be restringified by getting nodeNames[n] for any node in the destringified graph.</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| graph | <code>Array.&lt;Edge.&lt;string&gt;&gt;</code> | <p>A graph in the form of an edge list</p> |
+| options | <code>Object</code> | <p>An object with two (optional) keys: source and sink. If a value is supplied at this key, the function will assume that the source/sink node's name is equal to the supplied value.</p> |
+
+<a name="restringifyGraph"></a>
+
+## restringifyGraph(graph, nodeNames) ⇒ <code>Array.&lt;Edge.&lt;string&gt;&gt;</code>
+<p>Restringifies a graph that has been destringified by destringifyGraph</p>
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;Edge.&lt;string&gt;&gt;</code> - <p>The restringified graph</p>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| graph | <code>Array.&lt;Edge.&lt;number&gt;&gt;</code> | <p>The graph as an edge list</p> |
+| nodeNames | <code>Array.&lt;string&gt;</code> | <p>The names of each node, so that the name of the node numbered <code>x</code> can be found at <code>nodeNames[x]</code></p> |
 
