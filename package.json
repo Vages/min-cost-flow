@@ -1,6 +1,6 @@
 {
   "name": "min-cost-flow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Solves minimum-cost flow problems using the successive shortest paths algorithm",
   "main": "dist/index.js",
   "author": "Eirik Vågeskar <eirikvageskar@gmail.com>",
@@ -21,7 +21,13 @@
   "xo": {
     "prettier": true,
     "rules": {
-      "eqeqeq": ["error", "always", {"null": "never"}],
+      "eqeqeq": [
+        "error",
+        "always",
+        {
+          "null": "never"
+        }
+      ],
       "no-eq-null": "off",
       "unicorn/no-reduce": "off"
     }
