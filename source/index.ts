@@ -1,7 +1,3 @@
-/**
- * @module min-cost-flow
- */
-
 import Heap from 'heap';
 
 export type Edge = {

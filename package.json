@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "build:doc": "jsdoc2md --files ./source/index.ts --configure ./jsdoc2md.json > ./foo.md",
+    "build:doc": "jsdoc2md --template README.hbs --files ./source/index.ts --configure ./jsdoc2md.json > README.md",
     "test": "jest",
     "lint": "xo",
     "lint:fix": "xo --fix"
