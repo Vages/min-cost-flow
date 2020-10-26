@@ -1,6 +1,7 @@
 /* eslint-env jest */
 
-import {Edge, minCostFlow, currentCost, currentFlow} from '../source';
+import {minCostFlow, currentCost, currentFlow} from '../source';
+import type {Edge} from '../source';
 
 const bipartiteNetwork: Edge[] = [
   ...[{to: 1}, {to: 2}, {to: 3}].map((edge) => ({...edge, from: 0, cost: 0})),

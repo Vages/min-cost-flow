@@ -1,3 +1,7 @@
+/**
+ * @module min-cost-flow
+ */
+
 import Heap from 'heap';
 
 export type Edge = {
@@ -20,7 +24,8 @@ const SOURCE_NODE = 0;
  * - Only one edge goes between any two nodes – in either direction. In other words: no double edges in the same direction, and no back edges.
  *
  * @param {Edge[]} graph The graph represented as an edge list
- * @param {number | undefined} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
+ * @param {number} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
+ * @returns {Array<Required<Edge>>} The network updated to provide as much flow up to the limit specified by desiredFlow
  */
 export function minCostFlow(graph: Edge[], desiredFlow = Infinity): Array<Required<Edge>> {
   const sink = Math.max(...graph.map(({to}) => to));
@@ -40,8 +45,8 @@ export function minCostFlow(graph: Edge[], desiredFlow = Infinity): Array<Requir
 
   let flow = 0;
   while (flow < desiredFlow) {
-    const {distances, predecessors} = shortestPaths(adjacency, capacityMatrix, costMatrix);
-    if (distances[sink] === Infinity) {
+    const {leastCosts, predecessors} = cheapestPaths(adjacency, capacityMatrix, costMatrix);
+    if (leastCosts[sink] === Infinity) {
       break;
     }
 
@@ -66,17 +71,22 @@ export function minCostFlow(graph: Edge[], desiredFlow = Infinity): Array<Requir
 }
 
 /**
- * The Bellman-Ford shortest path algorithm as shown in
- * https://cp-algorithms.com/graph/min_cost_flow.html
+ * The Bellman-Ford shortest path algorithm as shown in [https://cp-algorithms.com/graph/min_cost_flow.html].
+ * Calculates the chepaest path from the source to every other node in the network as well as which node is the best predecessor of every node.
+ *
+ * @param {number[][]} adjacency . I.e., if adjacency[0] === [1, 4, 6], nodes 1, 4 and 6 are adjacent to 0.
+ * @param {number[][]} capacity A two dimensional array (size n*n, where n is the number of nodes) describing the capacity going from each node to any other. capacity[x][y] describes the capacity from node x to node y.
+ * @param {number[][]} cost A two dimensional array (size n*n, where n is the number of nodes) describing the cost of transporting one unit of flow from each node to any other. cost[x][y] describes the cost from node x to node y.
+ * @returns {{leastCosts: number[], predecessors: number[]}} An object with type `{leastCosts: number[], predecessors: number[]}`. The element at index `x` in each of these arrays contains the least cost of going to and the best predecessors for node `x` respectively.
  */
-function shortestPaths(
+function cheapestPaths(
   adjacency: number[][],
   capacity: number[][],
   cost: number[][]
-): {distances: number[]; predecessors: number[]} {
+): {leastCosts: number[]; predecessors: number[]} {
   const numberOfNodes = adjacency.length;
-  const distances: number[] = new Array(numberOfNodes).fill(Infinity);
-  distances[SOURCE_NODE] = 0;
+  const leastCosts: number[] = new Array(numberOfNodes).fill(Infinity);
+  leastCosts[SOURCE_NODE] = 0;
   const inQueue: boolean[] = new Array(numberOfNodes).fill(false);
   const queue: Heap<number> = new Heap();
   queue.push(SOURCE_NODE);
@@ -86,8 +96,8 @@ function shortestPaths(
     const home: number = queue.pop();
     inQueue[home] = false;
     adjacency[home].forEach((neighbor) => {
-      if (capacity[home][neighbor] > 0 && distances[neighbor] > distances[home] + cost[home][neighbor]) {
-        distances[neighbor] = distances[home] + cost[home][neighbor];
+      if (capacity[home][neighbor] > 0 && leastCosts[neighbor] > leastCosts[home] + cost[home][neighbor]) {
+        leastCosts[neighbor] = leastCosts[home] + cost[home][neighbor];
         predecessors[neighbor] = home;
         if (!inQueue[neighbor]) {
           inQueue[neighbor] = true;
@@ -97,13 +107,14 @@ function shortestPaths(
     });
   }
 
-  return {distances, predecessors};
+  return {leastCosts, predecessors};
 }
 
 /**
- * Calculates the current flow in the network as the sum of the flow on all edges going from the source node
+ * Calculates the current flow in a network, which is the sum of the flow on all edges going from the source node
  *
- * @param {Edge[]} graph The graph represented as an edge list
+ * @param {Edge[]} graph A graph in the form of an edge list
+ * @returns {number} The current flow
  */
 export function currentFlow(graph: Edge[]): number {
   return graph
@@ -112,9 +123,10 @@ export function currentFlow(graph: Edge[]): number {
 }
 
 /**
- * Calculates the current cost of the network as the sum of each edge's cost times its flow
+ * Calculates the current cost of a network, which is the sum of each edge's cost per unit of flow times the flow passing through it
  *
- * @param {Edge[]} graph The graph represented as an edge list
+ * @param {Edge[]} graph A graph in the form of an edge list
+ * @returns {number} The current cost of the network
  */
 export function currentCost(graph: Edge[]): number {
   return graph.reduce((accumulator, edge) => accumulator + edge.cost * (edge.flow ?? 0), 0);

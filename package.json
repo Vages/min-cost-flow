@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "build:doc": "jsdoc2md --files ./source/index.ts --configure ./jsdoc2md.json > ./foo.md",
     "test": "jest",
     "lint": "xo",
     "lint:fix": "xo --fix"
@@ -23,9 +24,10 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.12.0",
-    "@babel/preset-env": "^7.12.0",
-    "@babel/preset-typescript": "^7.12.0",
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
     "@sindresorhus/tsconfig": "^0.7.0",
     "@types/heap": "^0.2.28",
     "@types/jest": "^26.0.14",
@@ -34,6 +36,8 @@
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.3.0",
     "jest": "^26.5.3",
+    "jsdoc-babel": "^0.5.0",
+    "jsdoc-to-markdown": "^6.0.1",
     "lint-staged": "^10.4.0",
     "xo": "^0.33.1"
   },
