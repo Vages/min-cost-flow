@@ -23,7 +23,7 @@ const SOURCE_NODE = 0;
  * @param {number} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
  * @returns {Array<Required<Edge>>} The network updated to provide as much flow up to the limit specified by desiredFlow
  */
-export function minCostFlow(graph: Array<Edge<number>>, desiredFlow = Infinity): Array<Required<Edge>> {
+export function minCostFlow(graph: Array<Edge<number>>, desiredFlow = Infinity): Array<Required<Edge<number>>> {
   const sink = Math.max(...graph.map(({to}) => to));
   const numberOfNodes = sink + 1;
 
