@@ -6,12 +6,13 @@
   "author": "Eirik Vågeskar <eirikvageskar@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "build:doc": "jsdoc2md --template README.hbs --files ./source/index.ts --configure ./jsdoc2md.json > README.md && npx markdown-toc -i README.md && npx prettier --write README.md",
+    "build": "npm run build:code && npm run build:docs && npm run build:graphs",
+    "build:code": "tsc",
+    "build:docs": "jsdoc2md --template README.hbs --files ./source/index.ts --configure ./jsdoc2md.json > README.md && npx markdown-toc -i README.md && npx prettier --write README.md",
     "build:graphs": "dot docs/city-flow.dot -Tsvg -o docs/city-flow.svg && dot docs/students.dot -Tsvg -o docs/students.svg",
     "test": "jest",
+    "prepublishOnly": "npm run build && npm run test",
     "lint": "xo",
-    "prepublishOnly": "tsc && npm run test",
     "lint:fix": "xo --fix"
   },
   "husky": {
