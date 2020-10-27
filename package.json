@@ -1,6 +1,6 @@
 {
   "name": "min-cost-flow",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Solves minimum-cost flow problems using the successive shortest paths algorithm",
   "main": "dist/index.js",
   "author": "Eirik Vågeskar <eirikvageskar@gmail.com>",
