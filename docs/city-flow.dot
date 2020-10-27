@@ -1,0 +1,23 @@
+digraph G {
+	graph [mindist=1.5,
+		rankdir=LR
+	];
+	{
+		graph [rank=same];
+		oslo;
+		drammen;
+		bergen;
+	}
+	SOURCE -> oslo	[color=blue,
+		label="cost: 2,\ncapacity: 2\nflow: 1"];
+	SOURCE -> drammen	[color=red,
+		label="cost: 1,\ncapacity: 1\nflow: 1"];
+	SOURCE -> bergen	[label="cost: 2,\ncapacity: 2\nflow: 0"];
+	oslo -> trondheim	[color=blue,
+		label="cost: 4,\ncapacity: 2\nflow: 1"];
+	drammen -> trondheim	[color=blue,
+		label="cost: 1,\ncapacity: 2\nflow: 1"];
+	bergen -> trondheim	[label="cost: 8,\ncapacity: 1\nflow: 0"];
+	trondheim -> SINK	[color=red,
+		label="cost: 2,\ncapacity: 2\nflow: 2"];
+}

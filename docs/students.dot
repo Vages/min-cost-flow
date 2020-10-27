@@ -1,0 +1,39 @@
+digraph G {
+	graph [ordering=out,
+		rankdir=LR
+		ranksep=1
+	];
+	{
+		graph [rank=same];
+		Xanthippe;
+		Yazoo;
+		Zamboni;
+	}
+	{
+		graph [rank=same];
+		Accounting;
+		Bicycles;
+		Construction;
+		Dentistry;
+	}
+	Xanthippe -> Accounting	 [label=4];
+	Xanthippe -> Bicycles	 [label=2];
+	Xanthippe -> Construction	 [label=1 color=red];
+	Xanthippe -> Dentistry	 [label=3];
+	Yazoo -> Accounting	 [label=3];
+	Yazoo -> Bicycles	 [label=1 color=red,
+		minlen=3];
+	Yazoo -> Construction	 [label=2];
+	Yazoo -> Dentistry	 [label=4];
+	Zamboni -> Accounting	 [label=2];
+	Zamboni -> Bicycles	 [label=4];
+	Zamboni -> Construction	 [label=3];
+	Zamboni -> Dentistry	 [label=1 color=red];
+	SOURCE -> Xanthippe [color=red];
+	SOURCE -> Yazoo [color=red];
+	SOURCE -> Zamboni  [color=red];
+	Accounting -> SINK;
+	Bicycles -> SINK  [color=red];
+	Construction -> SINK  [color=red];
+	Dentistry -> SINK  [color=red];
+}

@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
-    "build:doc": "jsdoc2md --template README.hbs --files ./source/index.ts --configure ./jsdoc2md.json > README.md",
+    "build:doc": "jsdoc2md --template README.hbs --files ./source/index.ts --configure ./jsdoc2md.json > README.md && npx markdown-toc -i README.md && npx prettier --write README.md",
+    "build:graphs": "dot docs/city-flow.dot -Tsvg -o docs/city-flow.svg && dot docs/students.dot -Tsvg -o docs/students.svg",
     "test": "jest",
     "lint": "xo",
     "prepublishOnly": "tsc && npm run test",
