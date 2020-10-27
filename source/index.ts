@@ -8,11 +8,39 @@ export type Edge<T = number | string> = {
   flow?: number;
 };
 
+type DestringifyOptions = {source?: string; sink?: string};
+
 const SOURCE_NODE = 0;
 
+type MinCostFlowOptions = {desiredFlow?: number} & DestringifyOptions;
+
 /**
- * An implementation of the Successive shortest path algorithm for solving a minimum cost flow problem
- * The implementation is nabbed from <https://cp-algorithms.com/graph/min_cost_flow.html>
+ * Solves a minimum-cost flow problem using the successive shortest paths algorithm. Assumes that only one edge goes
+ * between any two nodes – in either direction. In other words: no double edges in the same direction, and no back
+ * edges.
+ *
+ * The function is a wrapper that destringifies the graph, calls minCostFlowForNumberNodes on it and restringifies the
+ * result.
+ *
+ * @param {Array<Edge<string>>} graph The graph represented as an edge list
+ * @param {MinCostFlowOptions} options An object with three keys: source (string), sink (string) and
+ * desiredFlow (number). Source is `"SOURCE"` by default, sink is `"SINK"` by default and desiredFlow is `Infinity` by
+ * default (indicating a desire for maximum flow).
+ * @returns {Array<Required<Edge<string>>>}
+ */
+export function minCostFlow(
+  graph: Array<Edge<string>>,
+  options: MinCostFlowOptions = {}
+): Array<Required<Edge<string>>> {
+  const {desiredFlow, ...destringifyOptions} = options;
+  const [destringifiedGraph, nodeNames] = destringifyGraph(graph, destringifyOptions);
+  return restringifyGraph(minCostFlowForNumberNodes(destringifiedGraph, desiredFlow), nodeNames) as Array<
+    Required<Edge<string>>
+  >;
+}
+
+/**
+ * The underlying implementation of the successive shortest paths algorithm, nabbed from <https://cp-algorithms.com/graph/min_cost_flow.html>
  *
  * Assumptions:
  * - The nodes are sequentially numbered integers from 0 to (but not including) n.
@@ -23,7 +51,10 @@ const SOURCE_NODE = 0;
  * @param {number} desiredFlow The maximum flow you want; the algorithm stops when it reaches this number. Default is Infinity, indicating a desire for maximum flow.
  * @returns {Array<Required<Edge>>} The network updated to provide as much flow up to the limit specified by desiredFlow
  */
-export function minCostFlow(graph: Array<Edge<number>>, desiredFlow = Infinity): Array<Required<Edge<number>>> {
+export function minCostFlowForNumberNodes(
+  graph: Array<Edge<number>>,
+  desiredFlow = Infinity
+): Array<Required<Edge<number>>> {
   const sink = Math.max(...graph.map(({to}) => to));
   const numberOfNodes = sink + 1;
 
@@ -107,28 +138,6 @@ function cheapestPaths(
 }
 
 /**
- * Calculates the current flow in a network, which is the sum of the flow on all edges going from the source node
- *
- * @param {Array<Edge<number>>} graph A graph in the form of an edge list
- * @returns {number} The current flow
- */
-export function currentFlow(graph: Array<Edge<number>>): number {
-  return graph
-    .filter((edge) => edge.from === SOURCE_NODE)
-    .reduce((accumulator, edge) => accumulator + (edge.flow ?? 0), 0);
-}
-
-/**
- * Calculates the current cost of a network, which is the sum of each edge's cost per unit of flow times the flow passing through it
- *
- * @param {Array<Edge<number>>} graph A graph in the form of an edge list
- * @returns {number} The current cost of the network
- */
-export function currentCost(graph: Array<Edge<number>>): number {
-  return graph.reduce((accumulator, edge) => accumulator + edge.cost * (edge.flow ?? 0), 0);
-}
-
-/**
  * Takes a graph with edges edges going to and from nodes with string names and transforms it into a graph with numbered edges,
  * following the convention that the source node is the first node and the sink node the last.
  * It assumes that the source node's name is SOURCE and the sink node's name is SINK.
@@ -140,7 +149,7 @@ export function currentCost(graph: Array<Edge<number>>): number {
  */
 export function destringifyGraph(
   graph: Array<Edge<string>>,
-  options: {source?: string; sink?: string} = {}
+  options: DestringifyOptions = {}
 ): [Array<Edge<number>>, string[]] {
   const {source = 'SOURCE', sink = 'SINK'} = options;
   const ordinaryNodes = [
