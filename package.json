@@ -1,6 +1,6 @@
 {
   "name": "min-cost-flow",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Solves minimum-cost flow problems using the successive shortest paths algorithm",
   "repository": "https://github.com/Vages/min-cost-flow",
   "main": "dist/index.js",
