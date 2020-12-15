@@ -1,6 +1,12 @@
 /* eslint-env jest */
 
-import {minCostFlowForNumberNodes, destringifyGraph, restringifyGraph, minCostFlow} from '../source';
+import {
+  minCostFlowForNumberNodes,
+  destringifyGraph,
+  restringifyGraph,
+  minCostFlow,
+  minimumWeightBipartiteMatch
+} from '../source';
 import type {Edge} from '../source';
 
 test('solves the student assignment problem', () => {
@@ -23,6 +29,27 @@ test('destringifyGraph and restringifyGraph work with differently named nodes', 
   const [, nodeNames] = destringifyGraph(SOLUTION_WITH_NAMED_NODES, {source: 'daniel', sink: 'bob'});
   expect(nodeNames).toEqual(['daniel', 'SINK', 'SOURCE', 'alice', 'christine', 'erica', 'frank', 'bob']);
 });
+
+test('solves bipartite taxi matching', () => {
+  expect(minimumWeightBipartiteMatch(TAXI_PROBLEM)).toEqual(TAXI_SOLUTION);
+});
+
+// As seen in docs/taxi-problem.png
+const TAXI_PROBLEM = [
+  {left: 'green_taxi', right: 'cyan_people', weight: 4},
+  {left: 'green_taxi', right: 'pink_people', weight: 5},
+  {left: 'green_taxi', right: 'yellow_people', weight: 6},
+  {left: 'blue_taxi', right: 'cyan_people', weight: 11},
+  {left: 'blue_taxi', right: 'pink_people', weight: 1},
+  {left: 'blue_taxi', right: 'yellow_people', weight: 9},
+  {left: 'red_taxi', right: 'pink_people', weight: 18}
+];
+
+const TAXI_SOLUTION = [
+  {left: 'green_taxi', right: 'cyan_people', weight: 4},
+  {left: 'blue_taxi', right: 'yellow_people', weight: 9},
+  {left: 'red_taxi', right: 'pink_people', weight: 18}
+];
 
 const STUDENT_ASSIGNMENT_PROBLEM = [
   {

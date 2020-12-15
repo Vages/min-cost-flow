@@ -73,7 +73,8 @@ export function minCostFlowForNumberNodes(
   let flow = 0;
   while (flow < desiredFlow) {
     const {leastCosts, predecessors} = cheapestPaths(adjacency, capacityMatrix, costMatrix);
-    if (leastCosts[sink] === Infinity) {
+    const noCapacityLeft = leastCosts[sink] === Infinity;
+    if (noCapacityLeft) {
       break;
     }
 
@@ -88,9 +89,10 @@ export function minCostFlowForNumberNodes(
     currentNode = sink;
 
     while (currentNode !== SOURCE_NODE) {
-      capacityMatrix[predecessors[currentNode]][currentNode] -= maxFlowOnThisPath;
-      capacityMatrix[currentNode][predecessors[currentNode]] += maxFlowOnThisPath;
-      currentNode = predecessors[currentNode];
+      const precedingNode = predecessors[currentNode];
+      capacityMatrix[precedingNode][currentNode] -= maxFlowOnThisPath;
+      capacityMatrix[currentNode][precedingNode] += maxFlowOnThisPath;
+      currentNode = precedingNode;
     }
   }
 
@@ -195,4 +197,34 @@ export function restringifyGraph(graph: Array<Edge<number>>, nodeNames: string[]
 
     return {...edge, from: nodeNames[from], to: nodeNames[to]};
   });
+}
+
+type BipartiteEdge = {left: string; right: string; weight: number};
+
+/**
+ * Finds a minimum weight bipartite match for a graph.
+ *
+ * Converts the problem to a minimum-cost flow problem.
+ *
+ * @param {BipartiteEdge[]} edges The entire weighted graph represented as weighted edges
+ * @returns {BipartiteEdge[]} The edges that are part of the minimum bipartite match
+ */
+export function minimumWeightBipartiteMatch(edges: BipartiteEdge[]): BipartiteEdge[] {
+  const leftNodes = edges.map(({left}) => left);
+  const rightNodes = edges.map(({right}) => right);
+
+  const middleEdges: Array<Edge<string>> = edges.map(({left, right, weight}) => ({
+    from: left,
+    to: right,
+    cost: weight,
+    capacity: 1
+  }));
+  const sourceEdges = leftNodes.map((name) => ({from: 'SOURCE', to: name, cost: 0, capacity: 1}));
+  const sinkEdges = rightNodes.map((name) => ({to: 'SINK', from: name, cost: 0, capacity: 1}));
+
+  const solution = minCostFlow([...sourceEdges, ...middleEdges, ...sinkEdges]);
+
+  return solution
+    .filter(({from, to, flow}) => flow > 0 && from !== 'SOURCE' && to !== 'SINK')
+    .map(({from, to, cost}) => ({left: from, right: to, weight: cost}));
 }

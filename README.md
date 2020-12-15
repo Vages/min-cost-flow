@@ -16,6 +16,7 @@
 - [cheapestPaths(adjacency, capacity, cost) ⇒ Object](#cheapestpathsadjacency-capacity-cost-%E2%87%92-object)
 - [destringifyGraph(graph, options) ⇒ Array](#destringifygraphgraph-options-%E2%87%92-array)
 - [restringifyGraph(graph, nodeNames) ⇒ Array.&lt;Edge.&lt;string&gt;&gt;](#restringifygraphgraph-nodenames-%E2%87%92-arrayltedgeltstringgtgt)
+- [minimumWeightBipartiteMatch(edges) ⇒ Array.&lt;BipartiteEdge&gt;](#minimumweightbipartitematchedges-%E2%87%92-arrayltbipartiteedgegt)
 
 <!-- tocstop -->
 
@@ -153,6 +154,9 @@ following the convention that the source node is the first node and the sink nod
 It assumes that the source node's name is SOURCE and the sink node's name is SINK.</p></dd>
 <dt><a href="#restringifyGraph">restringifyGraph(graph, nodeNames)</a> ⇒ <code>Array.&lt;Edge.&lt;string&gt;&gt;</code></dt>
 <dd><p>Restringifies a graph that has been destringified by destringifyGraph</p></dd>
+<dt><a href="#minimumWeightBipartiteMatch">minimumWeightBipartiteMatch(edges)</a> ⇒ <code>Array.&lt;BipartiteEdge&gt;</code></dt>
+<dd><p>Finds a minimum weight bipartite match for a graph.</p>
+<p>Converts the problem to a minimum-cost flow problem.</p></dd>
 </dl>
 
 <a name="minCostFlow"></a>
@@ -242,3 +246,17 @@ getting nodeNames[n] for any node in the destringified graph.</p>
 | --------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | graph     | <code>Array.&lt;Edge.&lt;number&gt;&gt;</code> | <p>The graph as an edge list</p>                                                                                              |
 | nodeNames | <code>Array.&lt;string&gt;</code>              | <p>The names of each node, so that the name of the node numbered <code>x</code> can be found at <code>nodeNames[x]</code></p> |
+
+<a name="minimumWeightBipartiteMatch"></a>
+
+## minimumWeightBipartiteMatch(edges) ⇒ <code>Array.&lt;BipartiteEdge&gt;</code>
+
+<p>Finds a minimum weight bipartite match for a graph.</p>
+<p>Converts the problem to a minimum-cost flow problem.</p>
+
+**Kind**: global function  
+**Returns**: <code>Array.&lt;BipartiteEdge&gt;</code> - <p>The edges that are part of the minimum bipartite match</p>
+
+| Param | Type                                     | Description                                                    |
+| ----- | ---------------------------------------- | -------------------------------------------------------------- |
+| edges | <code>Array.&lt;BipartiteEdge&gt;</code> | <p>The entire weighted graph represented as weighted edges</p> |
