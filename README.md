@@ -44,8 +44,10 @@ Below is an illustration of the solution to a flow problem in a network of Norwe
 
 - The network has a total flow of 2 units, limited by the edge from `trondheim` to `SINK`.
 - The cheapest route from from `SOURCE` to `trondheim` goes through `drammen`, but is limited by the edge from `SOURCE`
-  to `drammen`. Therefore, one unit has to pass through the more expensive route via `oslo`. Bergen is even
-- Edge color explanation
+  to `drammen`. Therefore, one unit has to pass through the more expensive route via `oslo`. Bergen is even more expensive,
+  making it an unviable option for any flow.
+  
+Edge color explanation:
 - Red indicates max flow (flow is equal to capacity)
 - Blue indicates some flow, but not maximum
 - Black edges have no flow
